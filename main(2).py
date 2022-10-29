@@ -162,10 +162,20 @@ def generateMealPlan(username):
 
 
     def createFoodDialog():
-        def addIngredient(col):
-            addedIngredient = tk.Label(createFood, text = inputIngredient.get())
-            addedIngredient.grid(column = col[0], row = 2)
-            col[0] += 1
+        def notContain(list, item):
+            for i in list:
+                if i == item:
+                    return False
+            return True
+        def addIngredient(col, list):
+            if notContain(list, inputIngredient.get()):
+                addedIngredient = tk.Label(createFood, text = inputIngredient.get())
+                addedIngredient.grid(column = col[0], row = 2)
+                col[0] += 1
+                list.append(inputIngredient.get())
+
+        def createFood(list):
+            callsp("",())
 
         createFood = tk.Toplevel(window)
         createFood.title("create food")
@@ -182,9 +192,11 @@ def generateMealPlan(username):
         inputIngredient.set("ingredient")
         chooseIngredientList = tk.OptionMenu(createFood, inputIngredient, *availableIngredient)
         col = [0]
+        chosenIngredient = []
         chooseIngredientList.grid(column = 0, row = 1)
-        addButton = tk.Button(createFood, text = "add", command = lambda:addIngredient(col))
-        addButton.grid(column = 1, row = 1)
+        tk.Button(createFood, text = "add", command = lambda:addIngredient(col, chosenIngredient)).grid(column = 1, row = 1)
+        tk.Button(createFood, text = "create", command = lambda: createFood(chosenIngredient)).grid(column = 1, row = 3)
+
 
 
 
