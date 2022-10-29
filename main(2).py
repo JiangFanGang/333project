@@ -167,6 +167,7 @@ def generateMealPlan(username):
                 if i == item:
                     return False
             return True
+
         def addIngredient(col, list):
             if notContain(list, inputIngredient.get()):
                 addedIngredient = tk.Label(createFood, text = inputIngredient.get())
@@ -174,8 +175,9 @@ def generateMealPlan(username):
                 col[0] += 1
                 list.append(inputIngredient.get())
 
-        def createFood(list):
-            callsp("",())
+        def createFood(food, ingredient, instruction):
+            callsp("",(food, instruction))#create a food name with instruction
+            callsp("",(food, ingredient)) ##add the information into include relation table
 
         createFood = tk.Toplevel(window)
         createFood.title("create food")
@@ -194,8 +196,12 @@ def generateMealPlan(username):
         col = [0]
         chosenIngredient = []
         chooseIngredientList.grid(column = 0, row = 1)
+        instructionLabel = tk.Label(createFood, text = "instruction")
+        instructionLabel.grid(column = 0, row = 3)
+        inputInstruction = tk.Entry(createFood)
+        inputInstruction.grid(column = 1, row = 3)
         tk.Button(createFood, text = "add", command = lambda:addIngredient(col, chosenIngredient)).grid(column = 1, row = 1)
-        tk.Button(createFood, text = "create", command = lambda: createFood(chosenIngredient)).grid(column = 1, row = 3)
+        tk.Button(createFood, text = "create", command = lambda: createFood(inputFoodName,chosenIngredient, inputInstruction)).grid(column = 1, row = 4)
 
 
 
