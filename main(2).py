@@ -159,6 +159,41 @@ def generateMealPlan(username):
         ttk.Button(edit, text = "Update Edit",command = editFood).grid(column = 0 ,row = 2)
         ttk.Button(edit, text = "Delete this Food", command = deleteFood).grid(column = 1 ,row = 2)
         edit.mainloop()
+
+
+    def createFoodDialog():
+        def addIngredient(col):
+            addedIngredient = tk.Label(createFood, text = inputIngredient.get())
+            addedIngredient.grid(column = col[0], row = 2)
+            col[0] += 1
+
+        createFood = tk.Toplevel(window)
+        createFood.title("create food")
+        createFood.geometry("400x200")
+        foodName = tk.Label(createFood, text="foodName")
+        foodName.grid(column = 0, row = 0)
+        inputFoodName = tk.Entry(createFood)
+        inputFoodName.grid(column = 1, row = 0)
+        availableIngredient = []
+        ingredientList = callsp("get_Ingredient",())
+        for item in ingredientList:
+            availableIngredient.append(item["name"])
+        inputIngredient = tk.StringVar()
+        inputIngredient.set("ingredient")
+        chooseIngredientList = tk.OptionMenu(createFood, inputIngredient, *availableIngredient)
+        col = [0]
+        chooseIngredientList.grid(column = 0, row = 1)
+        addButton = tk.Button(createFood, text = "add", command = lambda:addIngredient(col))
+        addButton.grid(column = 1, row = 1)
+
+
+
+
+    def createIngredientDialog():
+        createIngredient = tk.Toplevel(window)
+        createIngredient.title("create ingredients")
+        createIngredient.geometry("300x200")
+
         
     
     window = tk.Tk()
@@ -185,8 +220,8 @@ def generateMealPlan(username):
     plan.pack()
     ttk.Button(window, text="Add Food To Meal Plan", command=addFoodDialog).pack()
     ttk.Button(window, text = "Edit current Food on the Meal Plan", command = editFoodDialog).pack()
-    # ttk.Button(window, text = "create food").pack()
-    # ttk.Button(window, text = "")
+    ttk.Button(window, text = "create food",command = createFoodDialog).pack()
+    ttk.Button(window, text = "create ingredient",command = createIngredientDialog).pack()
 
     window.mainloop()
 
