@@ -175,9 +175,13 @@ def generateMealPlan(username):
                 col[0] += 1
                 list.append(inputIngredient.get())
 
-        def createFood(food, ingredient, instruction):
-            callsp("",(food, instruction))#create a food name with instruction
-            callsp("",(food, ingredient)) ##add the information into include relation table
+        def createFoodOnclick(food, ingredient, instruction):
+            callsp("insert_Food",(food, instruction,))#create a food name with instruction
+            for item in ingredient:
+                callsp("insert_IsIngredientOf",(food, item,))
+            createFood.destroy()
+
+
 
         createFood = tk.Toplevel(window)
         createFood.title("create food")
@@ -201,16 +205,25 @@ def generateMealPlan(username):
         inputInstruction = tk.Entry(createFood)
         inputInstruction.grid(column = 1, row = 3)
         tk.Button(createFood, text = "add", command = lambda:addIngredient(col, chosenIngredient)).grid(column = 1, row = 1)
-        tk.Button(createFood, text = "create", command = lambda: createFood(inputFoodName,chosenIngredient, inputInstruction)).grid(column = 1, row = 4)
+        tk.Button(createFood, text = "create", command = lambda: createFoodOnclick(inputFoodName.get(),chosenIngredient,inputInstruction.get())).grid(column = 1, row = 4)
 
 
 
 
 
     def createIngredientDialog():
+        def createIngredientOnClick(ingredient):
+            callsp("insert_Ingredient", (ingredient,))
+            createIngredient.destroy()
+
         createIngredient = tk.Toplevel(window)
         createIngredient.title("create ingredients")
         createIngredient.geometry("300x200")
+        ingredientName = tk.Label(createIngredient, text = "ingredientName")
+        ingredientName.grid(column = 0, row = 0)
+        inputIngredientName = tk.Entry(createIngredient)
+        inputIngredientName.grid(column = 1, row = 0)
+        tk.Button(createIngredient, text = "create", command = lambda: createIngredientOnClick(inputIngredientName.get())).grid(column = 0, row =1)
 
         
     
